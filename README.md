@@ -32,16 +32,16 @@ Initialize the SurrealDB instance (which is created in ./repository/surrealdb_re
 ```rs
 
     let surreal = SurrealDBRepo::init().await.expect("Error connecting to SurrealDB!");
-    
+
     let db_data = Data::new(surreal);
-    
+
 ```
 
 Clone that instance in the app_data() method to send to the api routes.
 
 ```rs
 
-    HttpServer::new(move || { 
+    HttpServer::new(move || {
         App::new()
             .app_data(db_data.clone())
             .service(create_todo)
@@ -146,7 +146,7 @@ impl From<TodoPatch> for Value {
     fn from(val: TodoPatch) -> Self {
 
         let mut value: BTreeMap<String, Value> = BTreeMap::new();
-        
+
         if let Some(t) = val.title {
             value.insert("title".into(), t.into());
         }
@@ -160,7 +160,7 @@ impl From<TodoPatch> for Value {
 
 ```
 
-Note: surrealdb:Value is how surreal DB will consume your data, you'll need to convert query variables into Value. The response from a query will be Result<Value, Error>. Again, this value will need to be converted to a consumable rust type. In this example, the ```surrealdb::Value```s returned are converted to ```surrealdb::Object```s, which are JSON serializable and can be sent directly in the Http response. 
+Note: surrealdb:Value is how surreal DB will consume your data, you'll need to convert query variables into Value. The response from a query will be Result<Value, Error>. Again, this value will need to be converted to a consumable rust type. In this example, the `surrealdb::Value`s returned are converted to `surrealdb::Object`s, which are JSON serializable and can be sent directly in the Http response.
 
 This is done by implementing rust's new type pattern:
 
@@ -233,17 +233,17 @@ impl TodoBMC {
     /* snip */
     pub async fn get(db: Data<SurrealDBRepo>, tid: &str) -> Result<Object, Error> {
         let sql = "SELECT * FROM $th";
-            
+
             let tid = format!("todo:{}", tid);
 
             let vars: BTreeMap<String, Value> = map!["th".into() => thing(&tid)?.into()];
-    
+
             let ress = db.ds.execute(sql, &db.ses, Some(vars), true).await?;
-    
+
             let first_res = ress.into_iter().next().expect("Did not get a response");
-    
+
             W(first_res.result?.first()).try_into()
-           
+
     }
     /* snip */
 }
@@ -259,13 +259,13 @@ Get the id string from the route, then, using the TodoBMC struct, query the data
 #[get("/todos/{id}")]
 pub async fn get_todo(db: Data<SurrealDBRepo>, path: Path<String>) -> HttpResponse {
     let id = path.into_inner();
-    
+
     if id.is_empty() {
         return HttpResponse::BadRequest().body("invalid ID");
     }
-    
+
     let todo_detail = TodoBMC::get(db, &id).await;
-    
+
     match todo_detail {
         Ok(todo) => HttpResponse::Ok().json(todo),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
@@ -306,3 +306,12 @@ Hope this was helpful!
 └── target
     ├── ...
 ```
+
+# Next
+
+- [How to Build a REST API using Actix Rust to Execute System Commands — A Step-by-Step Guide](https://codeburst.io/how-to-build-a-rest-api-to-execute-system-commands-using-actix-rust-a-step-by-step-guide-e257d5442b16)
+- [Error Handling with Actix](https://medium.com/intelliconnect-engineering/error-handling-with-actix-112ac2a7e8a2)
+- [https://medium.com/intelliconnect-engineering/securing-apis-with-apikey-39d0e22f62dd](https://medium.com/intelliconnect-engineering/securing-apis-with-apikey-39d0e22f62dd)
+- [Rust: Actix Web Server on Pi Zero W Headless](https://medium.com/@areeb40/rust-actix-web-server-on-pi-zero-w-headless-c20736c0d5a5)
+- [User authentication in Rust](https://medium.com/swlh/user-authentication-in-rust-ee8116934d73)
+- anyhow for easy errro handeling
