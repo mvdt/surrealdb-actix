@@ -10,5 +10,5 @@ actix-web = "4"
 serde = { version = "1.0.136", features = ["derive"]}
 dotenv = "0.15.0"
 futures = "0.3"
-surrealdb = "1.0.0-beta.8"
 thiserror = "1"
+surrealdb = "1.0.0-beta.9"
