@@ -11,4 +11,6 @@ serde = { version = "1.0.136", features = ["derive"]}
 dotenv = "0.15.0"
 futures = "0.3"
 thiserror = "1"
-surrealdb = { git = "https://github.com/surrealdb/surrealdb.git", tag = "v1.0.0-beta.9" }
+env_logger = "0.10"
+log = "^0.4"
+surrealdb = { git = "https://github.com/surrealdb/surrealdb.git", tag = "v1.0.0-beta.8" }
