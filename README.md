@@ -309,6 +309,7 @@ Hope this was helpful!
 
 # Next
 
+- [YT: Build A Rust Backend (Really FAST Web Services with Actix Web)](https://www.youtube.com/watch?v=L8tWKqSMKUI)
 - [How to Build a REST API using Actix Rust to Execute System Commands — A Step-by-Step Guide](https://codeburst.io/how-to-build-a-rest-api-to-execute-system-commands-using-actix-rust-a-step-by-step-guide-e257d5442b16)
 - [Error Handling with Actix](https://medium.com/intelliconnect-engineering/error-handling-with-actix-112ac2a7e8a2)
 - [https://medium.com/intelliconnect-engineering/securing-apis-with-apikey-39d0e22f62dd](https://medium.com/intelliconnect-engineering/securing-apis-with-apikey-39d0e22f62dd)
